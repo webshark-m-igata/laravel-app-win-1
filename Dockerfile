@@ -1,6 +1,13 @@
-FROM node:22-slim
+# ベースイメージとしてDebianを使用
+FROM debian:latest
 
-RUN apt-get update && apt-get install -y nodejs npm
+# 必要なパッケージをインストールし、NodeSourceのPPAを追加してNode.jsをインストール
+RUN apt-get update && \
+    apt-get install -y curl gnupg2 && \
+    curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 FROM php:8.3-apache
 
