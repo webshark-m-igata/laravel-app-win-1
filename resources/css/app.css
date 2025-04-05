@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.p-dropdown-label.p-inputtext {
+    width: auto !important;
+}
