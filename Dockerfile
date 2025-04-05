@@ -15,8 +15,7 @@ RUN docker-php-ext-install gd
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # PHPの設定ファイルのコピー
 COPY php.ini /usr/local/etc/php/php.ini
-# Apacheの設定ファイルのコピー
-COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
+
 # 必要なパッケージのインストール
 RUN apt-get update && apt-get install -y \
     libpng-dev \
