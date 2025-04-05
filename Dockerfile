@@ -14,7 +14,6 @@ RUN docker-php-ext-install gd
 # パッケージのクリーンアップ
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # PHPの設定ファイルのコピー
-COPY php.ini /usr/local/etc/php/php.ini
 
 # 必要なパッケージのインストール
 RUN apt-get update && apt-get install -y \
