@@ -26,6 +26,8 @@ COPY . .
 # 依存関係のインストール
 RUN composer install --no-dev --optimize-autoloader
 
+RUN npm install
+
 # パーミッションの設定
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
@@ -37,3 +39,7 @@ EXPOSE 80
 
 # Apacheの起動
 CMD ["apache2-foreground"]
+
+RUN npm install vite
+
+RUN npm run dev
