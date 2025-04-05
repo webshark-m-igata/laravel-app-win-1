@@ -59,6 +59,9 @@ RUN php artisan key:generate --force
 # マイグレーションの実行
 RUN php artisan migrate --force
 
+# ストレージリンクの作成
+RUN php artisan storage:link
+
 # ポートの公開
 EXPOSE 80
 
