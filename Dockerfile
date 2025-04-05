@@ -1,3 +1,9 @@
+FROM node:22-slim as node-builder
+
+COPY . ./laravel-app
+RUN cd /laravel-app && npm ci && npm run prod
+
+
 FROM php:8.3-apache
 
 # 必要なパッケージのインストール
@@ -16,12 +22,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# 作業ディレクトリの設定
-WORKDIR /var/www/html
-
-# アプリケーションファイルのコピー
-COPY . .
 
 # 依存関係のインストール
 RUN composer install --no-dev --optimize-autoloader
