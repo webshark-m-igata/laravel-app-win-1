@@ -14,8 +14,6 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # PHPの設定ファイルのコピー
 
-# パッケージのクリーンアップ
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
