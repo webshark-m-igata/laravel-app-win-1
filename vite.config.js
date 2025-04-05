@@ -8,7 +8,7 @@ export default defineConfig({
         laravel({
                     input: 'resources/js/app.jsx',
                     refresh: true,
-                    buildDirectory: '',
+                    buildDirectory: 'public',
                     hmr: true,
                 }),
         react(),
