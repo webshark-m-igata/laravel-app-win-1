@@ -1,0 +1,1 @@
+import{j as m}from"./app-BINiEKMl.js";import{B as s}from"./button.esm-1k4mVwBB.js";function e({className:r="",disabled:t,children:o,...i}){return m.jsx(s,{...i,className:r,disabled:t,severity:"primary",children:o})}export{e as P};
