@@ -4,7 +4,8 @@
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
+/vendor/*
+!/vendor/fakerphp/
 .env.backup
 .env.production
 .phpactor.json
