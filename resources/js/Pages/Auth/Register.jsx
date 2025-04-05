@@ -11,6 +11,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        role: 'user',
     });
 
     const submit = (e) => {
@@ -33,7 +34,7 @@ export default function Register() {
                         id="name"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="block mt-1 w-full"
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
@@ -51,7 +52,7 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="block mt-1 w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -68,7 +69,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="block mt-1 w-full"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
@@ -88,7 +89,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="block mt-1 w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -102,10 +103,29 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
+                <div className="mt-4">
+                    <InputLabel htmlFor="role" value="Role" />
+
+                    <select
+                        id="role"
+                        name="role"
+                        value={data.role}
+                        className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        onChange={(e) => setData('role', e.target.value)}
+                        required
+                    >
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                    </select>
+
+                    <InputError message={errors.role} className="mt-2" />
+                </div>
+
+                <div className="flex justify-end items-center mt-4">
                     <Link
                         href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Already registered?
                     </Link>
