@@ -59,8 +59,6 @@ RUN php artisan key:generate --force
 # マイグレーションの実行
 RUN php artisan migrate --force
 
-# シーダーの実行
-RUN php artisan db:seed --force
 
 # ストレージリンクの作成
 RUN php artisan storage:link
