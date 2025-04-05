@@ -56,6 +56,9 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 RUN if [ ! -f .env ]; then cp .env.example .env; fi
 RUN php artisan key:generate --force
 
+# マイグレーションの実行
+RUN php artisan migrate --force
+
 # ポートの公開
 EXPOSE 80
 
