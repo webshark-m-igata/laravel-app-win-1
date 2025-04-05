@@ -65,4 +65,4 @@ RUN a2enmod rewrite
 # Apacheの起動
 CMD ["apache2-foreground"]
 
-RUN npm run dev
+#RUN npm run dev
