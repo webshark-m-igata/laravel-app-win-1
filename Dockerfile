@@ -1,6 +1,10 @@
 FROM node:22-slim
 
+RUN apt-get update && apt-get install -y nodejs npm
+
 FROM php:8.3-apache
+
+RUN apt-get update && apt-get install -y
 
 # 必要なパッケージのインストール
 RUN apt-get update && apt-get install -y \
