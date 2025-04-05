@@ -1,34 +1,41 @@
-# ベースイメージとしてDebianを使用
-FROM debian:latest
+# マルチステージビルドを使用してLaravel Inertia+Reactアプリケーションを構築
 
-# 必要なパッケージをインストールし、NodeSourceのPPAを追加してNode.jsをインストール
-RUN apt-get update && \
-    apt-get install -y curl gnupg2 && \
-    curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y nodejs && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# ビルドステージ: Node.jsとPHPの依存関係をインストールしてアセットをビルド
+FROM node:22-slim as node-builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
+# PHPベースイメージ
 FROM php:8.3-apache
 
-RUN apt-get update && apt-get install -y
+# タイムゾーンを設定
+ENV TZ=Asia/Tokyo
 
 # 必要なパッケージのインストール
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libpq-dev \
+    libzip-dev \
     zip \
     unzip \
+    git \
+    curl \
     && docker-php-ext-configure gd \
-    && docker-php-ext-install gd pdo pdo_mysql
-
-# パッケージのクリーンアップ
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-# PHPの設定ファイルのコピー
+    && docker-php-ext-install gd pdo pdo_mysql pdo_pgsql zip \
+    && a2enmod rewrite \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Composerのインストール
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Apacheの設定
+COPY docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # 作業ディレクトリの設定
 WORKDIR /var/www/html
@@ -36,21 +43,24 @@ WORKDIR /var/www/html
 # アプリケーションファイルのコピー
 COPY . .
 
+# Node.jsビルドステージからビルド済みアセットをコピー
+COPY --from=node-builder /app/public/build /var/www/html/public/build
+
 # 依存関係のインストール
 RUN composer install --no-dev --optimize-autoloader
-
-RUN npm install
 
 # パーミッションの設定
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Apacheのmod_rewriteを有効化
-RUN a2enmod rewrite
+# .envファイルの設定（必要に応じて）
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+RUN php artisan key:generate --force
 
 # ポートの公開
 EXPOSE 80
 
+# Apacheのmod_rewriteを有効化
+RUN a2enmod rewrite
+
 # Apacheの起動
 CMD ["apache2-foreground"]
-
-RUN npm run dev
