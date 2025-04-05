@@ -32,7 +32,18 @@ class AdminShopController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'opening_hours' => 'nullable|string',
+            'status' => 'nullable|string',
+            'phone_number' => 'nullable|string',
+            'url' => 'nullable|string',
+        ]);
+
+        Shop::create($validated);
+
+        return redirect()->route('admin.shops.index');
     }
 
     /**
