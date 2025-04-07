@@ -38,12 +38,20 @@ export default function Edit({ auth }) {
     const submit = (e) => {
         e.preventDefault();
 
-        put(`/admin/posts/${post.id}`, data, {
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('shop_id', shop_id);
+        formData.append('_method', 'PUT');
+        if (data.photo) {
+            formData.append('photo', data.photo);
+        }
+
+        put(`/admin/posts/${post.id}`, formData, {
             onSuccess: () => router.push('/admin/posts'),
             onError: (errors) => {
                 console.error('掲示板データの更新に失敗しました:', errors);
-            },
-            forceFormData: true
+            }
         });
     };
 
