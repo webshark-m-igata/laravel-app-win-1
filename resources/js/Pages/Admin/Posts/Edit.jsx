@@ -16,12 +16,14 @@ export default function Edit({ auth }) {
     const [content, setContent] = useState(post.content);
     const [shop_id, setShopId] = useState(post.shop_id || '');
     const [photoPreview, setPhotoPreview] = useState(post.photo ? `/storage/${post.photo}` : null);
+    const [deletePhoto, setDeletePhoto] = useState(false);
 
     const { data, setData, put, processing, errors } = useForm({
         title: title,
         content: content,
         shop_id: shop_id,
         photo: null,
+        delete_photo: false,
         _method: 'PUT',
     });
 
@@ -31,9 +33,10 @@ export default function Edit({ auth }) {
             content: content,
             shop_id: shop_id,
             photo: data.photo,
+            delete_photo: deletePhoto,
             _method: 'PUT',
         });
-    }, [title, content, shop_id, setData]);
+    }, [title, content, shop_id, deletePhoto, setData]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -43,6 +46,7 @@ export default function Edit({ auth }) {
         formData.append('content', content);
         formData.append('shop_id', shop_id);
         formData.append('_method', 'PUT');
+        formData.append('delete_photo', deletePhoto);
         if (data.photo) {
             formData.append('photo', data.photo);
         }
@@ -160,6 +164,16 @@ export default function Edit({ auth }) {
                                                 alt="Preview"
                                                 className="max-w-xs rounded-md"
                                             />
+                                            <button
+                                                type="button"
+                                                className="px-4 py-2 mt-2 text-sm text-red-600 hover:text-red-900"
+                                                onClick={() => {
+                                                    setDeletePhoto(true);
+                                                    setPhotoPreview(null);
+                                                }}
+                                            >
+                                                画像を削除
+                                            </button>
                                         </div>
                                     )}
                                 </div>

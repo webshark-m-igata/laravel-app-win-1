@@ -115,9 +115,6 @@ export default function Index({ auth, warehousePosts, search_title: initialSearc
                                     style={{ width: '20%' }}
                                     body={(rowData) => (
                                         <div className="flex flex-col space-y-2">
-                                            <Link href={route('admin.warehouse_posts.edit', rowData.id)} className="px-2 py-1 font-bold text-center text-white bg-green-500 rounded hover:bg-green-700">
-                                                編集
-                                            </Link>
                                             <button className="px-2 py-1 font-bold text-white bg-red-500 rounded hover:bg-red-700" onClick={() => handleDelete(rowData.id)}>削除</button>
                                         </div>
                                     )}

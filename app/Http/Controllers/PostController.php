@@ -194,6 +194,7 @@ class PostController extends Controller
             'content' => 'required|string',
             'shop_id' => 'required|exists:shops,id',
             'photo' => 'nullable|image|max:2048',
+            'delete_photo' => 'nullable|boolean'
         ]);
 
         $data = [
@@ -202,8 +203,13 @@ class PostController extends Controller
             'shop_id' => $request->shop_id,
         ];
 
-        // 画像がアップロードされた場合は保存
-        if ($request->hasFile('photo')) {
+        // 画像の削除が要求された場合
+        if ($request->delete_photo && $post->photo) {
+            Storage::disk('public')->delete($post->photo);
+            $data['photo'] = null;
+        }
+        // 新しい画像がアップロードされた場合
+        elseif ($request->hasFile('photo')) {
             // 古い画像が存在する場合は削除
             if ($post->photo) {
                 Storage::disk('public')->delete($post->photo);
