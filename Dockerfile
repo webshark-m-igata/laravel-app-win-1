@@ -57,7 +57,7 @@ RUN if [ ! -f .env ]; then cp .env.example .env; fi
 RUN php artisan key:generate --force
 
 # マイグレーションの実行
-RUN php artisan migrate --force
+RUN php artisan migrate:fresh --force
 
 
 # ストレージリンクの作成
