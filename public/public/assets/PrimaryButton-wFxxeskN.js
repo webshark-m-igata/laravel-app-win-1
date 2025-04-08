@@ -1,0 +1,1 @@
+import{j as m}from"./app-yTh-YxTC.js";import{B as s}from"./button.esm-BCdY-iGx.js";function e({className:r="",disabled:t,children:o,...i}){return m.jsx(s,{...i,className:r,disabled:t,severity:"primary",children:o})}export{e as P};
