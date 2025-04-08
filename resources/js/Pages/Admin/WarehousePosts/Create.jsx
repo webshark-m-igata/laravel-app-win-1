@@ -3,8 +3,8 @@ import { Head, router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import InputLabel from '@/Components/InputLabel.jsx';
 import TextInput from '@/Components/TextInput.jsx';
-import TextArea from '@/Components/TextArea.jsx';
-import SelectInput from '@/Components/SelectInput.jsx';
+import { Dropdown } from 'primereact/dropdown';
+import { InputTextarea } from 'primereact/inputtextarea';
 import InputError from '@/Components/InputError.jsx';
 import PrimaryButton from '@/Components/PrimaryButton.jsx';
 import { useForm } from '@inertiajs/react';
@@ -87,13 +87,14 @@ export default function Create({ auth, warehouses }) {
                                 <div className="mt-4">
                                     <InputLabel htmlFor="content" value="コンテンツ" />
 
-                                    <textarea
+                                    <InputTextarea
                                         id="content"
-                                        className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         value={content}
                                         onChange={(e) => setContent(e.target.value)}
+                                        rows={5}
+                                        className="block p-2 mt-1 w-full"
+                                        autoResize
                                         required
-                                        rows="8"
                                     />
 
                                     <InputError message={errors.content} className="mt-2" />
@@ -102,20 +103,17 @@ export default function Create({ auth, warehouses }) {
                                 <div className="mt-4">
                                     <InputLabel htmlFor="warehouse_id" value="倉庫" />
 
-                                    <SelectInput
+                                    <Dropdown
                                         id="warehouse_id"
-                                        className="block mt-1 w-full"
                                         value={warehouse_id}
-                                        onChange={(e) => setWarehouseId(e.target.value)}
+                                        options={warehouses.map(warehouse => ({ label: warehouse.name, value: warehouse.id }))}
+                                        onChange={(e) => setWarehouseId(e.value)}
+                                        placeholder="倉庫を選択"
+                                        className="block mt-1 w-full"
+                                        filter
+                                        filterPlaceholder="検索..."
                                         required
-                                    >
-                                        <option value="">倉庫を選択してください</option>
-                                        {warehouses.map((warehouse) => (
-                                            <option key={warehouse.id} value={warehouse.id}>
-                                                {warehouse.name}
-                                            </option>
-                                        ))}
-                                    </SelectInput>
+                                    />
 
                                     <InputError message={errors.warehouse_id} className="mt-2" />
                                 </div>
@@ -144,11 +142,26 @@ export default function Create({ auth, warehouses }) {
                                     {photoPreview && (
                                         <div className="mt-2">
                                             <p className="mb-2 text-sm">プレビュー:</p>
-                                            <img
-                                                src={photoPreview}
-                                                alt="Preview"
-                                                className="max-w-xs rounded-md"
-                                            />
+                                            <div className="inline-block relative">
+                                                <img
+                                                    src={photoPreview}
+                                                    alt="Preview"
+                                                    className="max-w-xs rounded-md"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setData('photo', null);
+                                                        setPhotoPreview(null);
+                                                    }}
+                                                    className="absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full hover:bg-red-700"
+                                                    style={{ transform: 'translate(50%, -50%)' }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     )}
                                 </div>

@@ -95,13 +95,25 @@ export default function CommentList({ comments, postId, auth }) {
                     <InputError message={errors.image} className="mt-2" />
 
                     {imagePreview && (
-                        <div className="mt-2">
+                        <div className="relative mt-2">
                             <p className="mb-2 text-sm">プレビュー:</p>
-                            <img
-                                src={imagePreview}
-                                alt="Preview"
-                                className="max-w-xs rounded-md"
-                            />
+                            <div className="inline-block relative">
+                                <img
+                                    src={imagePreview}
+                                    alt="Preview"
+                                    className="max-w-xs rounded-md"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setData('image', null);
+                                        setImagePreview(null);
+                                    }}
+                                    className="flex absolute -top-2 -right-2 justify-center items-center w-6 h-6 text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none"
+                                >
+                                    ×
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

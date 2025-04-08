@@ -16,12 +16,14 @@ export default function Edit({ auth }) {
     const [content, setContent] = useState(warehousePost.content);
     const [warehouse_id, setWarehouseId] = useState(warehousePost.warehouse_id || '');
     const [photoPreview, setPhotoPreview] = useState(warehousePost.photo ? `/storage/${warehousePost.photo}` : null);
+    const [deletePhoto, setDeletePhoto] = useState(false);
 
     const { data, setData, put, processing, errors } = useForm({
         title: title,
         content: content,
         warehouse_id: warehouse_id,
         photo: null,
+        delete_photo: false,
         _method: 'PUT',
     });
 
@@ -31,6 +33,7 @@ export default function Edit({ auth }) {
             content: content,
             warehouse_id: warehouse_id,
             photo: data.photo,
+            delete_photo: deletePhoto,
             _method: 'PUT',
         });
     }, [title, content, warehouse_id, setData]);
@@ -152,6 +155,16 @@ export default function Edit({ auth }) {
                                                 alt="Preview"
                                                 className="max-w-xs rounded-md"
                                             />
+                                            <button
+                                                type="button"
+                                                className="px-4 py-2 mt-2 text-sm text-red-600 hover:text-red-900"
+                                                onClick={() => {
+                                                    setDeletePhoto(true);
+                                                    setPhotoPreview(null);
+                                                }}
+                                            >
+                                                画像を削除
+                                            </button>
                                         </div>
                                     )}
                                 </div>

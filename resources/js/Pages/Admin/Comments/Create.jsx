@@ -10,8 +10,6 @@ import { Link } from '@inertiajs/react';
 import { Dropdown } from 'primereact/dropdown';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { FileUpload } from 'primereact/fileupload';
-import { Card } from 'primereact/card';
-import NavLink from '@/Components/NavLink';
 
 export default function Create({ auth, posts, warehousePosts }) {
     const [imagePreview, setImagePreview] = useState(null);
@@ -139,16 +137,29 @@ export default function Create({ auth, posts, warehousePosts }) {
                                     <InputError message={errors.image} className="mt-2" />
 
                                     {imagePreview && (
-                                        <Card className="overflow-hidden p-0 mt-2" style={{ maxWidth: '300px' }}>
-                                            <div className="p-2">
-                                                <p className="mb-1 text-sm text-gray-600">プレビュー:</p>
+                                        <div className="mt-2">
+                                            <p className="mb-2 text-sm">プレビュー:</p>
+                                            <div className="inline-block relative">
                                                 <img
                                                     src={imagePreview}
-                                                    alt="プレビュー"
-                                                    className="object-contain w-full max-h-48 rounded-md"
+                                                    alt="Preview"
+                                                    className="max-w-xs rounded-md"
                                                 />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setData('image', null);
+                                                        setImagePreview(null);
+                                                    }}
+                                                    className="absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full hover:bg-red-700"
+                                                    style={{ transform: 'translate(50%, -50%)' }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                                                    </svg>
+                                                </button>
                                             </div>
-                                        </Card>
+                                        </div>
                                     )}
                                 </div>
 

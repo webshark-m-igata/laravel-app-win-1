@@ -109,7 +109,22 @@ export default function Index({ auth, warehousePosts, search_title: initialSearc
                                     body={(rowData) => new Date(rowData.created_at).toLocaleDateString()}
                                 />
                                 <Column field="id" header="ID" sortable filter filterPlaceholder="IDで検索" style={{ width: '5%' }} />
-                                <Column field="title" header="タイトル" sortable filter filterPlaceholder="タイトルで検索" style={{ width: '20%' }} />
+                                <Column
+    field="title"
+    header="タイトル"
+    sortable
+    filter
+    filterPlaceholder="タイトルで検索"
+    style={{ width: '20%' }}
+    body={(rowData) => (
+        <Link
+            href={`/warehouse/posts/${rowData.id}`}
+            className="text-blue-600 hover:text-blue-800 hover:underline"
+        >
+            {rowData.title}
+        </Link>
+    )}
+/>
                                 <Column
                                     header="操作"
                                     style={{ width: '20%' }}
