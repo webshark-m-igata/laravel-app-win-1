@@ -108,6 +108,7 @@ class AdminPostController extends Controller
             'content' => 'required',
             'shop_id' => 'required|exists:shops,id',
             'photo' => 'nullable|image|max:2048',
+            'delete_photo' => 'nullable|boolean',
         ]);
 
         $post = Post::find($id);
@@ -117,8 +118,13 @@ class AdminPostController extends Controller
             'shop_id' => $validated['shop_id'],
         ];
 
-        // 画像がアップロードされた場合は保存
-        if ($request->hasFile('photo')) {
+        // 画像の削除が要求された場合
+        if ($request->input('delete_photo') && $post->photo) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($post->photo);
+            $data['photo'] = null;
+        }
+        // 新しい画像がアップロードされた場合は保存
+        elseif ($request->hasFile('photo')) {
             // 古い画像が存在する場合は削除
             if ($post->photo) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete($post->photo);
